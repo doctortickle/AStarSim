@@ -65,7 +65,7 @@ public class Grid extends JPanel {
         }
     }
     
-    public boolean checkObstacle(int x, int y) {
+    private boolean checkObstacle(int x, int y) {
     		for (int[] point : OBSTACLES) {
     			if (point[0] == x && point[1] == y) {
     				return true;
@@ -74,21 +74,21 @@ public class Grid extends JPanel {
     		return false;
     }
     
-    public boolean checkStart(int x, int y) {
+    private boolean checkStart(int x, int y) {
 		if (START[0] == x && START[1] == y) {
 			return true;
 		}
 		return false;
     }
     
-    public boolean checkEnd(int x, int y) {
+    private boolean checkEnd(int x, int y) {
 		if (END[0] == x && END[1] == y) {
 			return true;
 		}
 		return false;
     }
     
-    public boolean checkPath(int x, int y) {
+    private boolean checkPath(int x, int y) {
 		for (int[] point : PATHPOINT) {
 			if (point[0] == x && point[1] == y) {
 				return true;
@@ -96,6 +96,22 @@ public class Grid extends JPanel {
 		}
 		return false;
     }
+    
+    public boolean checkObstacle(MapLocation mapLocation) {
+		return checkObstacle(mapLocation.getX(), mapLocation.getY());
+	}
+	
+	public boolean checkStart(MapLocation mapLocation) {
+		return checkStart(mapLocation.getX(), mapLocation.getY());
+	}
+	
+	public boolean checkEnd(MapLocation mapLocation) {
+		return checkEnd(mapLocation.getX(), mapLocation.getY());
+	}
+	
+	public boolean checkPath(MapLocation mapLocation) {
+		return checkPath(mapLocation.getX(), mapLocation.getY());
+	}
     
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
