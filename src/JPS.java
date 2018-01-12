@@ -18,6 +18,7 @@ public class JPS {
 	}
 	
 	private void populateGrid() {
+		grid = new MapLocation[Grid.getRows()+1][Grid.getCols()+1];
 		for(int x = 0; x < Grid.getRows()+1; x++){
 	        for(int y = 0; y < Grid.getCols()+1; y++){
 	            grid[x][y] = new MapLocation(x, y);
@@ -33,7 +34,7 @@ public class JPS {
 			MapLocation curLoc = (MapLocation) openList.pop();
 			
 			if(curLoc.equals(end)) {
-				return backTrace(curLoc);
+				backTrace(curLoc);
 			}
 			
 			closedList.add(curLoc);
@@ -88,7 +89,7 @@ public class JPS {
             }           
 	}
 	
-	public ArrayList<MapLocation> jumpPointSearch() {
+	public void jumpPointSearch() {
 		
 		closedList = new ArrayList<>();
 		openList = new BinaryHeap(start);
@@ -96,12 +97,11 @@ public class JPS {
 		while(!openList.isEmpty()) {
 			MapLocation curLoc = (MapLocation) openList.pop();
 			if(curLoc.equals(end)) {
-				return backTrace(curLoc);
+				backTrace(curLoc);
 			}
 			identifySuccessors(curLoc);
 			closedList.add(curLoc);
 		}
-		return null;
 	}
 	
 	private void identifySuccessors(MapLocation curLoc) {
@@ -113,6 +113,10 @@ public class JPS {
                 if(dx == 0 && dy == 0)
                     continue;
                 
+                if(curLoc.getX() + dx < 1 || curLoc.getY() + dy < 1 || curLoc.getX() + dx > Grid.getRows() || curLoc.getY() + dy > Grid.getCols())  {
+                		continue;
+                }
+                System.out.println(curLoc.getX() + ", " + curLoc.getY());
                 if(isValidNeighbor(curLoc, grid[curLoc.getX() + dx][curLoc.getY() + dy]))
                 {
                     MapLocation jumpLoc = jump(curLoc, dx, dy);
@@ -136,6 +140,10 @@ public class JPS {
 		
 		int nextX = curLoc.getX() + dx;
 		int nextY = curLoc.getY() + dy;
+		if(nextX > Grid.getCols() || nextY > Grid.getRows()) {
+			return null;
+		}
+
 		MapLocation nextLoc = grid[nextX][nextY];
 		
 		if(nextLoc == null || nextLoc.isObstacle()) {
@@ -146,16 +154,20 @@ public class JPS {
 			return nextLoc;
 		}
 		
-		if(dx != 0 && dy !=0) {
-
-            if(grid[nextX - dx] [nextY] != null && grid[nextX - dx][nextY + dy] != null)
-                if(grid[nextX - dx][nextY].isObstacle() && !grid[nextX - dx][nextY + dy].isObstacle())
-                    return nextLoc;
-            
-            if(grid[nextX] [nextY - dy] != null && grid[nextX + dx][nextY - dy] != null)
-                if(grid[nextX][nextY - dy].isObstacle() && !grid[nextX + dx][nextY - dy].isObstacle())
-                    return nextLoc;
-            
+		if(dx != 0 && dy !=0) { 
+			
+			if(!(nextX - dx < 0) && !(nextY + dy > Grid.getRows())) {
+				if(grid[nextX - dx] [nextY] != null && grid[nextX - dx][nextY + dy] != null)
+	                if(grid[nextX - dx][nextY].isObstacle() && !grid[nextX - dx][nextY + dy].isObstacle())
+	                    return nextLoc;
+			}
+			
+			if(!(nextY - dy < 0) && !(nextX + dx > Grid.getCols())) {
+	            if(grid[nextX] [nextY - dy] != null && grid[nextX + dx][nextY - dy] != null)
+	                if(grid[nextX][nextY - dy].isObstacle() && !grid[nextX + dx][nextY - dy].isObstacle())
+	                    return nextLoc;
+			}
+   
             if(jump(nextLoc, dx, 0) != null || jump(nextLoc, 0, dy) != null)
                 return nextLoc; 
 		}
@@ -164,30 +176,39 @@ public class JPS {
 			
 			if(dx != 0) {
 				
-				if(!grid[nextX + dx][nextY].isObstacle() && grid[nextX][nextY + 1].isObstacle()) {
-					if(!grid[nextX + dx][nextY + 1].isObstacle()) {
-						return nextLoc;
+				if(!(nextY + 1 > Grid.getRows()) && !(nextX + dx > Grid.getCols())) {
+					if(!grid[nextX + dx][nextY].isObstacle() && grid[nextX][nextY + 1].isObstacle()) {
+						if(!grid[nextX + dx][nextY + 1].isObstacle()) {
+							return nextLoc;
+						}
 					}
 				}
 				
-				if(!grid[nextX + dx][nextY].isObstacle() && grid[nextX][nextY - 1].isObstacle()) {
-					if(!grid[nextX + dx][nextY - 1].isObstacle()) {
-						return nextLoc;
+				if(!(nextY - 1 < 0) && !(nextX + dx > Grid.getCols())) {
+					if(!grid[nextX + dx][nextY].isObstacle() && grid[nextX][nextY - 1].isObstacle()) {
+						if(!grid[nextX + dx][nextY - 1].isObstacle()) {
+							return nextLoc;
+						}
 					}
 				}
-				
+							
 			}
 			
 			else {
-				if(!grid[nextX][nextY + dy].isObstacle() && grid[nextX +1][nextY].isObstacle()) {
-					if(!grid[nextX + 1][nextY + dy].isObstacle()) {
-						return nextLoc;
+				if(!(nextY + dy > Grid.getCols()) && !(nextX + 1 > Grid.getCols())) {
+					if(!grid[nextX][nextY + dy].isObstacle() && grid[nextX +1][nextY].isObstacle()) {
+						if(!grid[nextX + 1][nextY + dy].isObstacle()) {
+							return nextLoc;
+						}
 					}
 				}
 				
-				if(!grid[nextX][nextY + dy].isObstacle() && grid[nextX -1][nextY].isObstacle()) {
-					if(!grid[nextX -1][nextY + dy].isObstacle()) {
-						return nextLoc;
+				
+				if(!(nextY + dy > Grid.getCols()) && !(nextX - 1 < 0)) {
+					if(!grid[nextX][nextY + dy].isObstacle() && grid[nextX -1][nextY].isObstacle()) {
+						if(!grid[nextX -1][nextY + dy].isObstacle()) {
+							return nextLoc;
+						}
 					}
 				}
 			}	
@@ -195,22 +216,31 @@ public class JPS {
 		return jump(nextLoc, dx, dy);
 	}
 	
-	private ArrayList<MapLocation> backTrace(MapLocation theLoc) {
+	private void backTrace(MapLocation theLoc) {
 		
-		ArrayList<MapLocation> thePath = new ArrayList<>();
 		MapLocation parent = theLoc;
-		while(parent != null) {
-			thePath.add(parent);
+		while(parent != null) {;
 			addToPath(parent);
 			parent = (MapLocation) parent.getParent();
 		}
-		return thePath;
 	}
 	
 	
 	private boolean isValidNeighbor(MapLocation mapLoc, MapLocation neighbor) {
 		return neighbor != null && !neighbor.isObstacle() && !closedList.contains(neighbor)
 				&& !neighbor.equals(mapLoc);
+	}
+	
+	private void addToPath(MapLocation mapLocation) {
+		int[] point = {mapLocation.getX(), mapLocation.getY()};
+		Grid.PATHPOINT.add(point);
+	}
+	
+	private boolean DxDyInBounds(MapLocation curLoc, int dx, int dy) {
+		if(curLoc.getX() + dx < 1 || curLoc.getY() + dy < 1 || curLoc.getX() + dx > Grid.getRows() || curLoc.getY() + dy > Grid.getCols())  {
+    			return false;
+		}
+		return true;
 	}
 	
 }

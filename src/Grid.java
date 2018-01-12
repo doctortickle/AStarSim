@@ -1,5 +1,3 @@
-import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 
 public class Grid {
@@ -10,8 +8,8 @@ public class Grid {
 	private static final int[][] OBSTACLES = {{5, 5}, {6, 6}, {5, 6}, {5, 7}, {5, 8}, {5, 9}, {5, 10},
 												{6,5}, {7,5}, {8,5}, {9,5}, {10, 5}, {18,18}, {18,19},
 												{18,20}, {20, 10}, {19, 10}, {18, 10}, {17, 10}};
-	private static final int START_X = 20;
-	private static final int START_Y = 20;
+	private static final int START_X = 19;
+	private static final int START_Y = 19;
 	private static final int END_X = 1;
 	private static final int END_Y = 2;
 	private static final MapLocation START = new MapLocation(START_X, START_Y);
