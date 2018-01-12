@@ -1,11 +1,12 @@
 import java.awt.*;
 import javax.swing.*;
 
+
 @SuppressWarnings("serial")
 public class GameWindow extends JPanel {
 	
-	private final Pathfinder pathfinder = new Pathfinder();
-	private final JPS jps = new JPS();
+	private final static Pathfinder pathfinder = new Pathfinder();
+	private final static JPS jps = new JPS();
 	private static final Color UNOCCUPIED = new Color(255, 255, 255);
 	private static final Color OBSTACLE = new Color(0, 0, 0);
 	private static final Color PLAYER = new Color(51, 51, 204);
@@ -24,10 +25,7 @@ public class GameWindow extends JPanel {
         g.clearRect(0, 0, getWidth(), getHeight());
         int rectWidth = getWidth() / Grid.getCols();
         int rectHeight = getHeight() / Grid.getRows();
-        
-        //pathfinder.runPathfind();
-        jps.jumpPointSearch();
-
+       
         for (int i = 0; i < Grid.getRows(); i++) {
             for (int j = 0; j < Grid.getCols(); j++) {
                 int x = i * rectWidth;
@@ -88,9 +86,44 @@ public class GameWindow extends JPanel {
 		return false;
 	}
 	
+	private static void getAverageAStar() {
+		double cumulative = 0;
+		double total = 0;
+		double startTime;
+		double endTime;
+		for(int x = 1; x < 1000; x++) {
+			startTime = System.nanoTime();
+			pathfinder.runPathfind();
+			endTime = System.nanoTime();
+			total = endTime-startTime;
+			cumulative += total;
+		}
+		double average = (cumulative/1000d)/1000000d;;
+		System.out.println("AStar - " + average);
+	}
+	
+	private static void getAverageJPS() {
+		double cumulative = 0;
+		double total = 0;
+		double startTime;
+		double endTime;
+		for(int x = 1; x < 1000; x++) {
+			startTime = System.nanoTime();
+			jps.jumpPointSearch();
+			endTime = System.nanoTime();
+			total = endTime-startTime;
+			cumulative += total;
+		}
+		double average = (cumulative/1000d)/1000000d;
+		System.out.println("JPS -" + average);
+	}
+	
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
+        getAverageJPS();
+    	getAverageAStar();
+    	
+        /*SwingUtilities.invokeLater(new Runnable() {
+            public void run() {          	
                 JFrame frame = new JFrame("Game");
                 GameWindow grid = new GameWindow();
                 frame.add(grid);
@@ -98,6 +131,6 @@ public class GameWindow extends JPanel {
                 frame.pack();
                 frame.setVisible(true);
             }
-        });
+        });*/
     }
 }

@@ -7,7 +7,8 @@ public class Grid {
 	private static final int GRID_SIZE_PIXELS = 10;
 	private static final int[][] OBSTACLES = {{5, 5}, {6, 6}, {5, 6}, {5, 7}, {5, 8}, {5, 9}, {5, 10},
 												{6,5}, {7,5}, {8,5}, {9,5}, {10, 5}, {18,18}, {18,19},
-												{18,20}, {20, 10}, {19, 10}, {18, 10}, {17, 10}};
+												{18,20}, {20, 10}, {19, 10}, {18, 10}, {17, 10},
+												{12, 7}, {12, 8}, {12, 9} };
 	private static final int START_X = 19;
 	private static final int START_Y = 19;
 	private static final int END_X = 1;

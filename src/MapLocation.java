@@ -78,6 +78,11 @@ public class MapLocation implements Comparable {
 	}
 	
 	@Override
+	public String toString() {
+		return this.x + ", " + this.y;
+	}
+	
+	@Override
 	public boolean equals(Object t) {
 		MapLocation other = (MapLocation) t;
 		if(this.getX() == other.getX() && this.getY() == other.getY()) {

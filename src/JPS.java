@@ -26,7 +26,7 @@ public class JPS {
 		}
 	}
 
-	public ArrayList<MapLocation> aStarPathFind() {
+	/*public ArrayList<MapLocation> aStarPathFind() {
 		closedList = new ArrayList<>();
 		openList = new BinaryHeap(start);
 		
@@ -67,7 +67,7 @@ public class JPS {
 				}
 			}			
 		}		
-	}
+	}*/
 	
 	private void calculateNodeScore(MapLocation loc) {
 		int manhattan = Math.abs(end.getX() - loc.getX()) * 10 + Math.abs(end.getY() - loc.getY()) * 10;
@@ -112,11 +112,7 @@ public class JPS {
             {
                 if(dx == 0 && dy == 0)
                     continue;
-                
-                if(curLoc.getX() + dx < 1 || curLoc.getY() + dy < 1 || curLoc.getX() + dx > Grid.getRows() || curLoc.getY() + dy > Grid.getCols())  {
-                		continue;
-                }
-                System.out.println(curLoc.getX() + ", " + curLoc.getY());
+
                 if(isValidNeighbor(curLoc, grid[curLoc.getX() + dx][curLoc.getY() + dy]))
                 {
                     MapLocation jumpLoc = jump(curLoc, dx, dy);
@@ -140,11 +136,8 @@ public class JPS {
 		
 		int nextX = curLoc.getX() + dx;
 		int nextY = curLoc.getY() + dy;
-		if(nextX > Grid.getCols() || nextY > Grid.getRows()) {
-			return null;
-		}
-
-		MapLocation nextLoc = grid[nextX][nextY];
+		
+		MapLocation nextLoc = getLoc(nextX, nextY);
 		
 		if(nextLoc == null || nextLoc.isObstacle()) {
 			return null;
@@ -155,18 +148,16 @@ public class JPS {
 		}
 		
 		if(dx != 0 && dy !=0) { 
-			
-			if(!(nextX - dx < 0) && !(nextY + dy > Grid.getRows())) {
-				if(grid[nextX - dx] [nextY] != null && grid[nextX - dx][nextY + dy] != null)
-	                if(grid[nextX - dx][nextY].isObstacle() && !grid[nextX - dx][nextY + dy].isObstacle())
-	                    return nextLoc;
-			}
-			
-			if(!(nextY - dy < 0) && !(nextX + dx > Grid.getCols())) {
-	            if(grid[nextX] [nextY - dy] != null && grid[nextX + dx][nextY - dy] != null)
-	                if(grid[nextX][nextY - dy].isObstacle() && !grid[nextX + dx][nextY - dy].isObstacle())
-	                    return nextLoc;
-			}
+
+			if(getLoc(nextX - dx, nextY) != null && getLoc(nextX - dx, nextY + dy) != null)
+                if(getLoc(nextX - dx, nextY).isObstacle() && !getLoc(nextX - dx, nextY + dy).isObstacle())
+                    return nextLoc;
+		
+
+            if(getLoc(nextX, nextY - dy) != null && getLoc(nextX + dx, nextY - dy) != null)
+                if(getLoc(nextX, nextY - dy).isObstacle() && !getLoc(nextX + dx, nextY - dy).isObstacle())
+                    return nextLoc;
+	
    
             if(jump(nextLoc, dx, 0) != null || jump(nextLoc, 0, dy) != null)
                 return nextLoc; 
@@ -176,37 +167,36 @@ public class JPS {
 			
 			if(dx != 0) {
 				
-				if(!(nextY + 1 > Grid.getRows()) && !(nextX + dx > Grid.getCols())) {
-					if(!grid[nextX + dx][nextY].isObstacle() && grid[nextX][nextY + 1].isObstacle()) {
-						if(!grid[nextX + dx][nextY + 1].isObstacle()) {
+				if(getLoc(nextX + dx, nextY) != null && getLoc(nextX, nextY +1) != null) {
+					if(!getLoc(nextX + dx, nextY).isObstacle() && getLoc(nextX, nextY + 1).isObstacle()) {
+						if(!getLoc(nextX + dx, nextY + 1).isObstacle()) {
 							return nextLoc;
 						}
 					}
-				}
+				}	
 				
-				if(!(nextY - 1 < 0) && !(nextX + dx > Grid.getCols())) {
-					if(!grid[nextX + dx][nextY].isObstacle() && grid[nextX][nextY - 1].isObstacle()) {
-						if(!grid[nextX + dx][nextY - 1].isObstacle()) {
+				if(getLoc(nextX + dx, nextY) != null && getLoc(nextX, nextY - 1) != null) {
+					if(!getLoc(nextX + dx, nextY).isObstacle() && getLoc(nextX, nextY - 1).isObstacle()) {
+						if(!getLoc(nextX + dx, nextY - 1).isObstacle()) {
 							return nextLoc;
 						}
 					}
 				}
-							
 			}
 			
 			else {
-				if(!(nextY + dy > Grid.getCols()) && !(nextX + 1 > Grid.getCols())) {
-					if(!grid[nextX][nextY + dy].isObstacle() && grid[nextX +1][nextY].isObstacle()) {
-						if(!grid[nextX + 1][nextY + dy].isObstacle()) {
+				
+				if(getLoc(nextX, nextY + dy) != null && getLoc(nextX +1, nextY) != null) {
+					if(!getLoc(nextX, nextY + dy).isObstacle() && getLoc(nextX +1, nextY).isObstacle()) {
+						if(!getLoc(nextX + 1, nextY + dy).isObstacle()) {
 							return nextLoc;
 						}
 					}
 				}
 				
-				
-				if(!(nextY + dy > Grid.getCols()) && !(nextX - 1 < 0)) {
-					if(!grid[nextX][nextY + dy].isObstacle() && grid[nextX -1][nextY].isObstacle()) {
-						if(!grid[nextX -1][nextY + dy].isObstacle()) {
+				if(getLoc(nextX, nextY + dy) != null && getLoc(nextX - 1, nextY) != null) {
+					if(!getLoc(nextX, nextY + dy).isObstacle() && getLoc(nextX - 1, nextY).isObstacle()) {
+						if(!getLoc(nextX -1, nextY + dy).isObstacle()) {
 							return nextLoc;
 						}
 					}
@@ -236,11 +226,9 @@ public class JPS {
 		Grid.PATHPOINT.add(point);
 	}
 	
-	private boolean DxDyInBounds(MapLocation curLoc, int dx, int dy) {
-		if(curLoc.getX() + dx < 1 || curLoc.getY() + dy < 1 || curLoc.getX() + dx > Grid.getRows() || curLoc.getY() + dy > Grid.getCols())  {
-    			return false;
-		}
-		return true;
+	private MapLocation getLoc(int x, int y) {
+		 if(x > Grid.getCols() || x < 0 || y > Grid.getRows() || y < 0)
+	            return null;
+	     return this.grid[x][y];
 	}
-	
 }
