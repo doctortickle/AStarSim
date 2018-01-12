@@ -1,15 +1,18 @@
 
-public class MapLocation {
+public class MapLocation implements Comparable {
 
 	private int x, y;
 	private int heuristicCost;
     private int finalCost;
     private MapLocation parent; 
+    private int gScore, hScore;
 	
 	public MapLocation(int x, int y) {
 		this.x = x;
 		this.y = y;
 		this.heuristicCost = setManhattanHeuristic();
+		this.gScore = 0;
+		this.hScore = 0;
 	}
 	
 	private int setManhattanHeuristic() {
@@ -31,6 +34,22 @@ public class MapLocation {
 
 	public int getFinalCost() {
 		return finalCost;
+	}
+	
+	public int getFScore() {
+		return hScore + gScore;
+	}
+	
+	public void setHScore(int hScore) {
+		this.hScore = hScore;
+	}
+	
+	public void setGScore(int gScore) {
+		this.gScore = gScore;
+	}
+	
+	public int getGScore() {
+		return this.gScore;
 	}
 
 	public MapLocation getParent() {
@@ -58,34 +77,25 @@ public class MapLocation {
 		return Grid.checkEnd(this);
 	}
 	
-    @Override
-    public String toString(){
-        return "["+this.x+", "+this.y+"]";
-    }
-
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + x;
-		result = prime * result + y;
-		return result;
+	public boolean equals(Object t) {
+		MapLocation other = (MapLocation) t;
+		if(this.getX() == other.getX() && this.getY() == other.getY()) {
+			return true;
+		}
+		return false;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		MapLocation other = (MapLocation) obj;
-		if (x != other.x)
-			return false;
-		if (y != other.y)
-			return false;
-		return true;
+	public int compareTo(Object t) {
+        if(!(t instanceof MapLocation))
+            return 0;
+        MapLocation other = (MapLocation)t;
+        if(getFScore() < other.getFScore())
+            return -1;
+        else if(getFScore() > other.getFScore())
+            return 1;
+        else return 0;
 	}
 	
 }
