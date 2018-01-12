@@ -93,6 +93,7 @@ public class GameWindow extends JPanel {
 		double endTime;
 		for(int x = 1; x < 1000; x++) {
 			startTime = System.nanoTime();
+			//jps.aStarPathFind();
 			pathfinder.runPathfind();
 			endTime = System.nanoTime();
 			total = endTime-startTime;
@@ -115,14 +116,14 @@ public class GameWindow extends JPanel {
 			cumulative += total;
 		}
 		double average = (cumulative/1000d)/1000000d;
-		System.out.println("JPS -" + average);
+		System.out.println("JPS - " + average);
 	}
 	
     public static void main(String[] args) {
         getAverageJPS();
-    	getAverageAStar();
-    	
-        /*SwingUtilities.invokeLater(new Runnable() {
+        getAverageAStar();
+        
+        SwingUtilities.invokeLater(new Runnable() {
             public void run() {          	
                 JFrame frame = new JFrame("Game");
                 GameWindow grid = new GameWindow();
@@ -131,6 +132,6 @@ public class GameWindow extends JPanel {
                 frame.pack();
                 frame.setVisible(true);
             }
-        });*/
+        });
     }
 }

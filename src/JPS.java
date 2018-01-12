@@ -26,7 +26,7 @@ public class JPS {
 		}
 	}
 
-	/*public ArrayList<MapLocation> aStarPathFind() {
+	public ArrayList<MapLocation> aStarPathFind() {
 		closedList = new ArrayList<>();
 		openList = new BinaryHeap(start);
 		
@@ -51,7 +51,7 @@ public class JPS {
 		
 		for(int dy = -1; dy <=1; dy++) {
 			for(int dx = 1; dx >= -1; dx--) {
-				MapLocation neighbor = grid[x+dx][y+dy];
+				MapLocation neighbor = getLoc(x+dx, y+dy);
 				if(isValidNeighbor(loc,neighbor)) {
 					if(!(dx != 0 && dy != 0) || cutCorners) {
 						if(!openList.contains(neighbor)) {
@@ -67,7 +67,7 @@ public class JPS {
 				}
 			}			
 		}		
-	}*/
+	}
 	
 	private void calculateNodeScore(MapLocation loc) {
 		int manhattan = Math.abs(end.getX() - loc.getX()) * 10 + Math.abs(end.getY() - loc.getY()) * 10;
@@ -113,7 +113,7 @@ public class JPS {
                 if(dx == 0 && dy == 0)
                     continue;
 
-                if(isValidNeighbor(curLoc, grid[curLoc.getX() + dx][curLoc.getY() + dy]))
+                if(isValidNeighbor(curLoc, getLoc(curLoc.getX() + dx, curLoc.getY() + dy)))
                 {
                     MapLocation jumpLoc = jump(curLoc, dx, dy);
                     if(jumpLoc != null)

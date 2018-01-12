@@ -5,14 +5,11 @@ public class Grid {
 	private static final int NUM_ROWS = 20;
 	private static final int NUM_COLS = 20;
 	private static final int GRID_SIZE_PIXELS = 10;
-	private static final int[][] OBSTACLES = {{5, 5}, {6, 6}, {5, 6}, {5, 7}, {5, 8}, {5, 9}, {5, 10},
-												{6,5}, {7,5}, {8,5}, {9,5}, {10, 5}, {18,18}, {18,19},
-												{18,20}, {20, 10}, {19, 10}, {18, 10}, {17, 10},
-												{12, 7}, {12, 8}, {12, 9} };
+	private static final int[][] OBSTACLES = ObstacleMaps.OBSTACLE_3;
 	private static final int START_X = 19;
 	private static final int START_Y = 19;
-	private static final int END_X = 1;
-	private static final int END_Y = 2;
+	private static final int END_X = 0;
+	private static final int END_Y = 0;
 	private static final MapLocation START = new MapLocation(START_X, START_Y);
 	private static final MapLocation END = new MapLocation(END_X, END_Y);
 	public static ArrayList<int[]> PATHPOINT = new ArrayList<int[]>();
