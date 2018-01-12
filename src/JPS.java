@@ -7,6 +7,11 @@ public class JPS {
 	private PQ openList;
 	private ArrayList<MapLocation> closedList;
 	
+	public JPS() {
+		assignStartAndEnd();
+		populateGrid();		
+	}
+	
 	private void assignStartAndEnd() {
 		start = Grid.getStart();
 		end = Grid.getEnd();
@@ -196,6 +201,7 @@ public class JPS {
 		MapLocation parent = theLoc;
 		while(parent != null) {
 			thePath.add(parent);
+			addToPath(parent);
 			parent = (MapLocation) parent.getParent();
 		}
 		return thePath;

@@ -5,6 +5,7 @@ import javax.swing.*;
 public class GameWindow extends JPanel {
 	
 	private final Pathfinder pathfinder = new Pathfinder();
+	private final JPS jps = new JPS();
 	private static final Color UNOCCUPIED = new Color(255, 255, 255);
 	private static final Color OBSTACLE = new Color(0, 0, 0);
 	private static final Color PLAYER = new Color(51, 51, 204);
@@ -24,7 +25,8 @@ public class GameWindow extends JPanel {
         int rectWidth = getWidth() / Grid.getCols();
         int rectHeight = getHeight() / Grid.getRows();
         
-        pathfinder.runPathfind();
+        //pathfinder.runPathfind();
+        jps.jumpPointSearch();
 
         for (int i = 0; i < Grid.getRows(); i++) {
             for (int j = 0; j < Grid.getCols(); j++) {
