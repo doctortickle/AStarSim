@@ -105,15 +105,16 @@ public class Pathfinder {
     
     private void traceBack() {
     	if(closed[Grid.getEnd().getX()][Grid.getEnd().getY()]) {
-    		//System.out.println("Path: ");
+    		System.out.println("Path: ");
     		MapLocation current = grid[Grid.getEndXY()[0]][Grid.getEndXY()[1]];
-    		//System.out.println(current.toString());
+    		addToPath(current);
+    		System.out.println(current.toString());
     		while(current.getParent()!=null) {
-    			//System.out.print(" -> " + current.getParent().toString());
+    			System.out.print(" -> " + current.getParent().toString());
     			current = current.getParent();
     			addToPath(current);
     		}
-    		//System.out.println();
+    		System.out.println();
     	}
     	else {
     		System.out.println("No possible path.");
